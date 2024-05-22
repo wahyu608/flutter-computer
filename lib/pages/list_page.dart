@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:my_app/model/shop.dart';
+import 'package:my_app/constant/color.dart';
+import 'package:my_app/model/product.dart';
+import 'package:my_app/pages/components/components.dart';
 import 'package:my_app/pages/create_page.dart';
 import 'dart:convert';
 
@@ -14,10 +16,11 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  late Future<List<Shop>> data;
+  late Future<List<Product>> productEntries;
 
-  Future<List<Shop>> fetchData() async {
-    const url = 'https://kusumawardanastudio.com/api/uas/kelompok1/api_read.php';
+  Future<List<Product>> fetchData() async {
+    const url =
+        'https://kusumawardanastudio.com/api/uas/kelompok1/api_read.php';
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -25,7 +28,7 @@ class _ListPageState extends State<ListPage> {
         Map<String, dynamic> api = json.decode(response.body);
         List<dynamic> jsonResponse = api['data'];
 
-        return jsonResponse.map((data) => Shop.fromJson(data)).toList();
+        return jsonResponse.map((data) => Product.fromJson(data)).toList();
       } else {
         throw Exception('Failed to load API data');
       }
@@ -37,53 +40,52 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
-    data = fetchData();
+    productEntries = fetchData();
+  }
+
+  Future<void> refetchData() async {
+    return setState(() {
+      productEntries = fetchData();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        backgroundColor: const Color(grayColor),
         foregroundColor: Colors.white,
-        title: Text("UNHI Fashion"),
+        title: const Text("Emil Computer"),
       ),
-      body: FutureBuilder<List<Shop>>(
-        future: data,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                var shop = snapshot.data![index];
-                return ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => DetailPage(model: shop)),
-                    );
+      body: RefreshIndicator(
+          onRefresh: refetchData,
+          child: FutureBuilder<List<Product>>(
+            future: productEntries,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var productEntries = snapshot.data ?? [];
+                var countOfProduct = productEntries.length;
+                return ListView.builder(
+                  itemCount: countOfProduct,
+                  itemBuilder: (context, index) {
+                    var product = productEntries[index];
+                    return CardComponent(product: product);
                   },
-                  title: Text(shop.title, style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(shop.description, maxLines: 2, style: TextStyle(overflow: TextOverflow.ellipsis)),
-                  leading: shop.image.isNotEmpty
-                      ? Image.network(shop.image, fit: BoxFit.cover)
-                      : Icon(Icons.image),
-                  trailing: Text("Rp. " + shop.harga),
                 );
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CreatePage()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CreatePage()));
         },
         child: const Icon(Icons.add),
         backgroundColor: Color.fromARGB(255, 255, 214, 9),
