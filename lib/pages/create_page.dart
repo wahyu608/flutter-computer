@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_app/pages/components/appbar_component.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -82,11 +83,7 @@ class _CreatePageState extends State<CreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amber,
-        foregroundColor: Colors.white,
-        title: const Text('UNHI Fashion'),
-      ),
+      appBar: const AppBarComponent(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(

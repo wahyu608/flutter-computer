@@ -98,7 +98,7 @@ class CardComponent extends StatelessWidget {
                                         Colors.grey.shade300)),
                                 icon: const Icon(Icons.shopping_basket),
                                 label: Text(
-                                  "13 Terjual",
+                                  "- Terjual",
                                   style: TextStyle(
                                       color: Colors.grey.shade300,
                                       fontWeight: FontWeight.bold),
