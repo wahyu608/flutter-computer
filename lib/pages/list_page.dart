@@ -52,11 +52,7 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(grayColor),
-        foregroundColor: Colors.white,
-        title: const Text("Emil Computer"),
-      ),
+      appBar: const AppBarComponent(),
       body: RefreshIndicator(
           onRefresh: refetchData,
           child: FutureBuilder<List<Product>>(
@@ -87,8 +83,8 @@ class _ListPageState extends State<ListPage> {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const CreatePage()));
         },
-        child: const Icon(Icons.add),
-        backgroundColor: Color.fromARGB(255, 255, 214, 9),
+        backgroundColor: const Color(grayColor),
+        child: const Icon(Icons.add, color: Colors.white,),
       ),
     );
   }

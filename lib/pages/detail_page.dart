@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/model/product.dart';
+import 'package:my_app/pages/components/appbar_component.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({Key? key, required this.product}) : super(key: key);
@@ -14,11 +15,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amber,
-        foregroundColor: Colors.white,
-        title: Text('Detail'),
-      ),
+   appBar: const AppBarComponent(),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
