@@ -86,14 +86,15 @@ class _DetailPageState extends State<DetailPage> {
                     onPressed: () {
                       DetailPage.launchWhatsApp('6282293338225','Halo, saya mau membeli "${widget.product.title}" boskuu, apakah masih tersedia produknya?', context);
                     },
-                    icon: const Icon(Icons.shopping_cart),
-                    label: const Text('Beli'),
+                    icon: const Icon(Icons.shopping_cart, color: Color.fromARGB(255, 255, 255, 255)),
+                    label: const Text('Beli', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                     style: ElevatedButton.styleFrom(
+                      primary: Color.fromARGB(255, 73, 86, 73),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,
                       ),
-                      textStyle: const TextStyle(fontSize: 18),
+                      textStyle: const TextStyle(fontSize: 18, ),
                     ),
                   ),
                   ElevatedButton.icon(
@@ -103,9 +104,10 @@ class _DetailPageState extends State<DetailPage> {
                             const SnackBar(content: Text("Link produk telah disalin!")));
                       });
                     },
-                    icon: const Icon(Icons.share),
-                    label: const Text('Share'),
+                    icon: const Icon(Icons.share, color: Color.fromARGB(255, 255, 255, 255)),
+                    label: const Text('Share', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                     style: ElevatedButton.styleFrom(
+                      primary: Color.fromARGB(255, 73, 86, 73),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,
