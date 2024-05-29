@@ -5,6 +5,7 @@ class CurrencyFormat {
     var nominalInNumber = int.tryParse(nominal);
 
     if (nominalInNumber == null) return "Rp. 0";
+    
 
     NumberFormat currencyFormatter = NumberFormat.currency(
       locale: 'id',

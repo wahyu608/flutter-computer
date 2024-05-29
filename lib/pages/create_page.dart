@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_app/constant/constant.dart';
 import 'package:my_app/pages/components/appbar_component.dart';
 
 class CreatePage extends StatefulWidget {
@@ -13,7 +14,7 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   final title = TextEditingController();
   final description = TextEditingController();
-  final harga = TextEditingController(); 
+  final harga = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -21,12 +22,12 @@ class _CreatePageState extends State<CreatePage> {
     if (_formKey.currentState!.validate()) {
       String titleValue = title.text;
       String descriptionValue = description.text;
-      String hargaValue = harga.text; 
-    
+      String hargaValue = harga.text;
+
       Map<String, String> data = {
         'title': titleValue,
         'description': descriptionValue,
-        'harga': hargaValue, 
+        'harga': hargaValue,
       };
 
       var url = Uri.parse('https://kusumawardanastudio.com/api/uas/kelompok1/api_create.php');
@@ -36,57 +37,60 @@ class _CreatePageState extends State<CreatePage> {
       );
 
       if (response.statusCode == 200) {
-      Map api = json.decode(response.body);
-      print(api['status']);
-      if (api['status'] == 'Success') {
-        final snackBar = SnackBar(
-          content: Text(api['message']),
-          action: SnackBarAction(
-            label: 'Undo',
-            textColor: Colors.green,
-            onPressed: () {
-              // Some code to undo the change.
-            },
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      } else if (api['status'] == 'Error') {
-        final snackBar = SnackBar(
-          content: Text(api['message']),
-          action: SnackBarAction(
-            label: 'Undo',
-            textColor: Colors.red,
-            onPressed: () {
-              // Some code to undo the change.
-            },
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Map api = json.decode(response.body);
+        print(api['status']);
+        if (api['status'] == 'Success') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(api['message']),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2), 
+            ),
+          );
+          Navigator.pop(context); 
+        } else if (api['status'] == 'Error') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(api['message']),
+              backgroundColor: Colors.red, 
+              duration: Duration(seconds: 2), 
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Tidak diketahui'),
+              backgroundColor: Colors.yellow,
+              duration: Duration(seconds: 2), 
+            ),
+          );
+        }
       } else {
-        final snackBar = SnackBar(
-          content: Text('Tidak diketahui'),
-          action: SnackBarAction(
-            label: 'Undo',
-            textColor: Colors.yellow,
-            onPressed: () {
-              // Some code to undo the change.
-            },
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        throw Exception('gagal untuk dapat data');
       }
-    } else {
-      throw Exception('gagal untuk dapat data');
     }
-    }}
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarComponent(),
+      appBar: const AppBarComponent(
+        title: 'Create Page',
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
-        child: Form(
+        child: Column(
+        children: [
+          Text(
+            'Tambahkan Produk Baru',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -99,7 +103,7 @@ class _CreatePageState extends State<CreatePage> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Title is required';
+                    return 'Judul Tidak Boleh Kosong';
                   }
                   return null;
                 },
@@ -114,22 +118,22 @@ class _CreatePageState extends State<CreatePage> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Description is required';
+                    return 'Deskripsi tidak boleh kosong';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: harga, 
+                controller: harga,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'Harga *', 
+                  labelText: 'Harga *',
                   border: OutlineInputBorder(),
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Harga is required'; 
+                    return 'Harga Juga Tidak Boleh Kosong';
                   }
                   return null;
                 },
@@ -140,14 +144,17 @@ class _CreatePageState extends State<CreatePage> {
                   submitForm();
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.amber,
-                  textStyle: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                  primary: Color(darkColor), 
+                  elevation: 5, 
+                  padding: EdgeInsets.symmetric(vertical: 16), 
                 ),
-                child: const Text('Submit'),
-              )
+                child: const Text('Submit', style: TextStyle(color: Colors.white)),
+              ),
             ],
           ),
         ),
+    ],
+      ),
       ),
     );
   }

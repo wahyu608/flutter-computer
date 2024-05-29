@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:my_app/constant/color.dart';
 
 class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarComponent({Key? key}) : super(key: key);
+  final String title;
+  const AppBarComponent({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-    iconTheme: IconThemeData(color: const Color.fromARGB(255, 255, 255, 255)),
-        title: Text("Emil Komputer",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+    iconTheme: const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+        title: Text(title, //update title to more flexible
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         actions: [
           Icon(
             Icons.search,

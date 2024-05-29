@@ -6,7 +6,6 @@ import 'package:my_app/pages/components/components.dart';
 import 'package:my_app/pages/create_page.dart';
 import 'dart:convert';
 
-import 'package:my_app/pages/detail_page.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key});
@@ -52,7 +51,9 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarComponent(),
+      appBar: const AppBarComponent(
+        title: 'Emill Komputer',
+      ),
       body: RefreshIndicator(
           onRefresh: refetchData,
           child: FutureBuilder<List<Product>>(
@@ -73,7 +74,7 @@ class _ListPageState extends State<ListPage> {
                   child: Text('Error: ${snapshot.error}'),
                 );
               }
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             },
@@ -83,7 +84,7 @@ class _ListPageState extends State<ListPage> {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const CreatePage()));
         },
-        backgroundColor: const Color(grayColor),
+        backgroundColor: const Color(blackColor),
         child: const Icon(Icons.add, color: Colors.white,),
       ),
     );
